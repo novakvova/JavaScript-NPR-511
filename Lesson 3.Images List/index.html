@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Список улюблених тварин</title>
+</head>
+<body>
+    <h1>Мої тварини</h1>
+    <script>
+        // У JavaScript - є спеціальні лапки `` для створення і підстановки змінно в рядок
+        url = "https://www.rbc.ua/static/img/_/b/_boris_do_dtp_stoyit_na_travi_mashini_za_parkanom_zhovtiy_dim_kadr_iz_video_youtube_com__irysik3076_bde6772c638a4d28481c9109fe86acae_1300x820.jpg";
+        str = `<img src = '${url}' alt = "Борис" width="550">`;
+        document.writeln(str);
+    </script>
+
+    <script>
+        document.writeln("<h2>Наш герой Борис :)</h2>");
+        images = [
+            "https://img.tsn.ua/cached/176/tsn-1284f5ef/thumbs/1200x630/b6/fa/83af21be538ae8c677593ed4a949fab6.jpg",
+            "https://promin.cv.ua/uploads/posts/2025-06/thumbs/1748891271_screenshot-at-jun-02-22-01-38.png",
+            "https://static.nv.ua/shared/system/MediaPhoto/images/000/580/890/original/53bd5c8d030aec4199ddd9aeffbdcca1.png?q=85&stamp=20260324115608&f=webp",
+            "https://focus.ua/static/storage/thumbs/1200x630/d/99/ploeqw-800ff999e2e23a6fe65eda72f39b899d.png?v=5520_1",
+            "https://i.ytimg.com/vi/QWzc8k_vAAY/maxresdefault.jpg",
+        ]; // це уже масив
+        len = images.length; // через length - довжина масиву
+        //Воводимо на сторінку тег <p> Len = значення змінної</p>
+        // document.writeln("<p> Len = " + len + "</p>");
+        document.writeln("<p> Len = ");
+        document.writeln(len);
+        document.writeln("</p>");
+        // for (let i = 0; i < len; i++ ) {
+        //     document.writeln("<span>");
+        //         document.writeln(`<img src = '${images[i]}' alt = "Борис" width="450">`);
+        //     document.writeln("</span>");
+        // }
+        let i = 0;
+        while (i < len) { // цикл зупиниться коли 5<5 - коли вийдемо більше 4
+            document.writeln("<span>");
+            document.writeln(`<img src = '${images[i]}' alt = "Борис" width="450">`);
+            document.writeln("</span>");
+            i++;
+        }
+    </script>
+</body>
+</html>

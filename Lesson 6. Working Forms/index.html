@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Робота з формами</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<main>
+    <h1 class="text-center">Реєстрація користувача</h1>
+    <div class="container">
+        <form class="row g-3 col-md-8 offset-md-2 needs-validation" novalidate>
+            <div class="col-md-6">
+                <label for="lastName" class="form-label">Прізвище</label>
+                <input type="text"
+                       class="form-control"
+                       id="lastName"
+                       name="lastName"
+                       placeholder="Прізвище" required>
+                <div class="invalid-feedback">
+                    Вкажіть прізвище.
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label for="firstName" class="form-label">Ім'я</label>
+                <input type="text"
+                       class="form-control"
+                       id="firstName"
+                       name="firstName"
+                       placeholder="Ім'я" required>
+                <div class="invalid-feedback">
+                    Вкажіть ім'я.
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label for="email" class="form-label">Електронна пошта</label>
+                <input type="email"
+                       class="form-control"
+                       id="email"
+                       name="email"
+                       placeholder="Електронна пошта" required>
+                <div class="invalid-feedback">
+                    Вкажіть пошту.
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label for="password" class="form-label">Пароль</label>
+                <input type="password"
+                       class="form-control"
+                       id="password"
+                       name="password"
+                       placeholder="Пароль" required>
+                <div class="invalid-feedback">
+                    Вкажіть пароль.
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <img src="/images/avatar.png"
+                     class="mx-auto d-block"
+                     style="width: 250px; border-radius: 50%;"
+                     alt="Фото користувача">
+            </div>
+
+            <div class="col-12">
+                <button class="btn btn-primary" type="submit">Реєстрація користувача</button>
+            </div>
+        </form>
+    </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (() => { //тут оголошується аноміна функція, яка є закритою для іншого коду
+        'use strict' //Вказуємо, що у нас буде строгий режим - новий JavaScript ES5 - підтримуємо веб браузер
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        //Елементів із класом .needs-validation - може бути багато через це - тут масив
+        const forms = document.querySelectorAll('.needs-validation') // Шукаємо елемент із класом .needs-validation
+
+        // Loop over them and prevent submission
+        //Перебираємо усі елементи масиву
+        //Елементи масиву містять у собі форму
+        Array.from(forms).forEach(form => {
+            //Для певної форми прив'язуємо обробку події
+            //submit - коли нажимаємо кнопку Реєструватися
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) { //Викликаємо checkValidity для форми і воно саме робить валідацію
+                    event.preventDefault() //Якщо не валідна форма, то роботу форми зупиняємо
+                    event.stopPropagation() //Видміняємо усі інші події
+                }
+                else {
+                    event.preventDefault() //тут я перехоплюю роботу форми і хочу подивитися дані форми
+                    const firstName = form.elements['firstName'].value; //із форми отримую значення firstName
+                    const lastName = form.elements['lastName'].value;
+                    const email = form.elements['email'].value;
+                    const password = form.elements['password'].value;
+                    const strInfo = "ПІБ: " + firstName + " " + lastName + " " + email + " " + password;
+                    alert(strInfo);
+                    console.log("Усе добре. Я тут працюю");
+                }
+
+                //Додаємо клас до форми
+                form.classList.add('was-validated') //Відображаємо помилки по валідації для форми
+            }, false)
+        })
+    })() //Тут ми викликаємо анонімну функцію, щоб код запустився JavaScript
+</script>
+</body>
+</html>

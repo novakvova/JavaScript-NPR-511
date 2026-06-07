@@ -1,0 +1,11 @@
+Відобразити список жанрів із сервера
+ось адреса.
+            const urlServer = "https://21-kn.itstep.click/api/Genres/Search";
+            fetch(urlServer)
+                .then(async res => //Буде запускати асинхроний метод до сервера.
+                {
+                    //Отримуємо json від сервера.
+                    const json = await res.json(); //асинхроно отримаємо результат, коли результат прийде
+                    console.log("server json = ", json);
+                });
+тобто вивести у розмітці html
