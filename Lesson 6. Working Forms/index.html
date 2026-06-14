@@ -57,11 +57,25 @@
                 </div>
             </div>
 
-            <div class="col-md-12">
-                <img src="/images/avatar.png"
-                     class="mx-auto d-block"
-                     style="width: 250px; border-radius: 50%;"
-                     alt="Фото користувача">
+            <div>
+                <label class="col-md-12" for="file">
+                    <img src="/images/avatar.png"
+                         id="avatarView"
+                         class="mx-auto d-block"
+                         role="button"
+                         style="width: 250px; border-radius: 50%;"
+                         alt="Фото користувача">
+                    <span role="button"
+                          class="mx-auto d-block text-center fs-5 text-success"
+                          style="width: 200px">
+                        Натисніть для вибору фото
+                    </span>
+                </label>
+                <input type="file"
+                       id="file"
+                       name="file"
+                       class="d-none"
+                       accept="image/*"/>
             </div>
 
             <div class="col-12">
@@ -76,6 +90,31 @@
     // Example starter JavaScript for disabling form submissions if there are invalid fields
     (() => { //тут оголошується аноміна функція, яка є закритою для іншого коду
         'use strict' //Вказуємо, що у нас буде строгий режим - новий JavaScript ES5 - підтримуємо веб браузер
+
+
+        //Шукаю інпут із id = file
+        //якщо стоїть . - то пошук по класу
+        const file = document.querySelector('#file');
+        file.addEventListener('change', (e) => {
+            var files = e.target.files;
+            //виводимо файл на консоль, який ми обрали
+            console.log("Select file", e.target.files);
+            if (files && files.length) {
+                const file = files[0];
+                if (/^image\/\w+/.test(file.type)) {
+                    const avatarView = document.querySelector('#avatarView');
+                    avatarView.src = URL.createObjectURL(file);
+                }
+                else
+                {
+                    alert("Оберіть файл фото. Не вірний формат")
+                }
+            }
+            else
+            {
+                alert("Ви не обрали жодного фалу!")
+            }
+        });
 
         // Fetch all the forms we want to apply custom Bootstrap validation styles to
         //Елементів із класом .needs-validation - може бути багато через це - тут масив
