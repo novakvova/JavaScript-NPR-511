@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Робота з формами</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css" />
 </head>
 <body>
 <main>
@@ -83,97 +84,69 @@
             </div>
         </form>
     </div>
+
+    <!-- Button trigger modal -->
+<!--    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">-->
+<!--        Launch demo modal-->
+<!--    </button>-->
+
+    <!-- Modal -->
+    <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Редагування фото</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <img src="/images/avatar.png"
+                         id="imgCrop"
+                         class="mx-auto d-block"
+                         role="button"
+                         style="width: 250px;"
+                         alt="Фото користувача">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
+                    <button type="button" class="btn btn-primary" id="btnSaveImage">Зберегти фото</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios@1.18.0/dist/axios.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios@1.18.1/dist/axios.min.js"></script>
+
 
 <script>
-    // Example starter JavaScript for disabling form submissions if there are invalid fields
-    (() => { //тут оголошується аноміна функція, яка є закритою для іншого коду
-        'use strict' //Вказуємо, що у нас буде строгий режим - новий JavaScript ES5 - підтримуємо веб браузер
+    /*
+    (()=>{
+        const image = document.getElementById("imgCrop");
+        //cropper - створюється, але він працює не вірно, бо вікно ще невідобразилося,
+        // a йому потрібно обробляти фото, він не знає розмір фото. не знає область
+        // тобто модальне вікно малюється користувачу пізніше
+        //Нам потрібно включати cropper - лише тоді коли вікно відобразилося
+        var cropper = null; // на початку роботи cropper не активний
 
-
-        //Шукаю інпут із id = file
-        //якщо стоїть . - то пошук по класу
-        const file = document.querySelector('#file');
-        file.addEventListener('change', (e) => {
-            var files = e.target.files;
-            //виводимо файл на консоль, який ми обрали
-            console.log("Select file", e.target.files);
-            if (files && files.length) {
-                const file = files[0];
-                if (/^image\/\w+/.test(file.type)) {
-                    const avatarView = document.querySelector('#avatarView');
-                    avatarView.src = URL.createObjectURL(file);
-                }
-                else
-                {
-                    alert("Оберіть файл фото. Не вірний формат")
-                }
-            }
-            else
-            {
-                alert("Ви не обрали жодного фалу!")
-            }
-        });
-
-        // Fetch all the forms we want to apply custom Bootstrap validation styles to
-        //Елементів із класом .needs-validation - може бути багато через це - тут масив
-        const forms = document.querySelectorAll('.needs-validation') // Шукаємо елемент із класом .needs-validation
-
-        // Loop over them and prevent submission
-        //Перебираємо усі елементи масиву
-        //Елементи масиву містять у собі форму
-        Array.from(forms).forEach(form => {
-            //Для певної форми прив'язуємо обробку події
-            //submit - коли нажимаємо кнопку Реєструватися
-            form.addEventListener('submit', event => {
-                if (!form.checkValidity()) { //Викликаємо checkValidity для форми і воно саме робить валідацію
-                    event.preventDefault() //Якщо не валідна форма, то роботу форми зупиняємо
-                    event.stopPropagation() //Видміняємо усі інші події
-                }
-                else {
-                    event.preventDefault() //тут я перехоплюю роботу форми і хочу подивитися дані форми
-                    const firstName = form.elements['firstName'].value; //із форми отримую значення firstName
-                    const lastName = form.elements['lastName'].value;
-                    const email = form.elements['email'].value;
-                    const password = form.elements['password'].value;
-                    const image = form.elements['file'].files[0];
-                    const strInfo = "ПІБ: " + firstName + " " + lastName + " " + email + " " + password;
-                    //Коли ми збираємо дані на сервер ми маємо знати, як сервер буде їх приймати
-                    //бо якщо не вірно вказати дані, нічого не вийде.
-                    //https://p32-native.itstep.click/swagger/index.html
-                    //графічний інтерфейс swagger - для тестування чи працює сервер
-                    //і розуміння того, які дані і як мають предаватися на сервер.
-                    //swagger - #1 - має знати тестувальник
-                    //p32 - це наш тестовий сервер
-
-                    //Для віправки запитів на сервер ми можемо використовуватися
-                    //fetch - вбудований новий спосіб відправки запитів на сервер
-                    //axios - це спеціальна бібліотека, яка більш продвинута і
-                    //має високий usability - використання і аудиторію
-
-                    //Об'єднує усі дані в собі
-                    const model = {
-                        firstName: firstName,
-                        lastName: lastName,
-                        email: email,
-                        password: password,
-                        imageFile: image
-                    }
-
-                    console.log("data send server ", model);
-
-                    alert(strInfo);
-                    console.log("Усе добре. Я тут працюю");
-                }
-
-                //Додаємо клас до форми
-                form.classList.add('was-validated') //Відображаємо помилки по валідації для форми
-            }, false)
-        })
-    })() //Тут ми викликаємо анонімну функцію, щоб код запустився JavaScript
+        //Шукаю модальне вікно по id
+        const exampleModal = document.getElementById('exampleModal')
+        if(exampleModal) { //якщо вікно існує тоді ми починаємо привязувати події
+            exampleModal.addEventListener('shown.bs.modal', event => { //до відображення
+                //Коли модалка готова - ми працюємо із кропером
+                cropper = new Cropper(image, {
+                        aspectRatio: 1/1,
+                        viewMode: 1, //обрізка не буде виходити за межі зображення
+                    });
+                console.log("Модальне вікно відобразилося :)");
+            });
+        }
+    })() */
 </script>
+
+<script src="/js/register.js"></script>
 </body>
 </html>
