@@ -86,6 +86,8 @@
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios@1.18.0/dist/axios.min.js"></script>
+
 <script>
     // Example starter JavaScript for disabling form submissions if there are invalid fields
     (() => { //тут оголошується аноміна функція, яка є закритою для іншого коду
@@ -137,7 +139,32 @@
                     const lastName = form.elements['lastName'].value;
                     const email = form.elements['email'].value;
                     const password = form.elements['password'].value;
+                    const image = form.elements['file'].files[0];
                     const strInfo = "ПІБ: " + firstName + " " + lastName + " " + email + " " + password;
+                    //Коли ми збираємо дані на сервер ми маємо знати, як сервер буде їх приймати
+                    //бо якщо не вірно вказати дані, нічого не вийде.
+                    //https://p32-native.itstep.click/swagger/index.html
+                    //графічний інтерфейс swagger - для тестування чи працює сервер
+                    //і розуміння того, які дані і як мають предаватися на сервер.
+                    //swagger - #1 - має знати тестувальник
+                    //p32 - це наш тестовий сервер
+
+                    //Для віправки запитів на сервер ми можемо використовуватися
+                    //fetch - вбудований новий спосіб відправки запитів на сервер
+                    //axios - це спеціальна бібліотека, яка більш продвинута і
+                    //має високий usability - використання і аудиторію
+
+                    //Об'єднує усі дані в собі
+                    const model = {
+                        firstName: firstName,
+                        lastName: lastName,
+                        email: email,
+                        password: password,
+                        imageFile: image
+                    }
+
+                    console.log("data send server ", model);
+
                     alert(strInfo);
                     console.log("Усе добре. Я тут працюю");
                 }
